@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("com.apollographql.apollo3")
 }
 
 android {
@@ -15,9 +16,6 @@ android {
         versionCode = AppCoordinates.APP_VERSION_CODE
         versionName = AppCoordinates.APP_VERSION_NAME
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    buildFeatures {
-        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -70,4 +68,16 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit.ktx)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.espresso.core)
+}
+
+apollo {
+    packageName.set("com.ninety8point6.mobilegraphql")
+    mapScalar(
+        "DateTime",
+        "kotlinx.datetime.Instant",
+        "com.apollographql.apollo3.adapter.KotlinxInstantAdapter"
+    )
+    mapScalarToKotlinString("Url")
+    generateOptionalOperationVariables.set(false)
+    generateTestBuilders.set(true)
 }
